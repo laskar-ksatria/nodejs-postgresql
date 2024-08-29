@@ -25,7 +25,7 @@ const dbName:string = "user";
 const User:ObjectFunction = {
     findMany: async ():Promise<any> => {
         const result = await postgres.query(Q_FIND_ALL(dbName));
-        return result?.rows[0] || null;
+        return result?.rows;
     },
     create: async (payload:TypeRegisterBody):Promise<any> => {
         const hash = HashingPassword(payload.password);
