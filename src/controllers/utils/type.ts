@@ -5,6 +5,10 @@ export type TypeRegisterBody = {
     password: string
 }
 
-export interface UserFunctions {
-    findMany: () => Promise<any>;
-  }
+export interface ObjectFunction {
+    findMany?: () => Promise<any>;
+    create?: (payload:TypeRegisterBody) => Promise<any>;
+    findOneById?: (id:string) => Promise<any>;
+    findOneByEmail?: (email:string) => Promise<any>;
+    findOneAndUpdate?: (payload:any) => Promise<any>;
+}

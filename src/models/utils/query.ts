@@ -8,4 +8,27 @@ export const Q_FIND_ALL = (dbName:string):string => {
     return `SELECT * FROM ${dbName.toLowerCase()}`
 };
 
-export const Q_FIND_ONE_USER = 'SELECT id, name, email, phone, password FROM users WHERE id = $1';
+
+export enum KeyEnum {
+  email = 'email',
+  id = 'id'
+}
+
+
+
+export const Q_FIND_ONE_USER = (key:KeyEnum) => 
+  `SELECT id, name, email, phone, password FROM users WHERE ${key} = $1`
+
+export const Q_UPDATE = (dbName:string, key:string, fields:string[]) => {
+  let fieldString = "";
+  fields.forEach((item:string, i:any) => {
+    if (i < fields.length - 1) fieldString += `${item} = $${item+1},`
+    else fieldString += `${item} = $${item+1}`
+  })
+  return `UPDATE users SET ${fieldString} WHERE ${key} = $${fields.length};`
+}
+
+// UPDATE users
+// SET name = $1,
+//     phone = $2
+// WHERE email = $3;
