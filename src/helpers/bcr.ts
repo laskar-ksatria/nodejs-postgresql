@@ -6,7 +6,7 @@ export const HashingPassword = (rawPassword:string):string => {
     return hash;
 };
 
-export const CheckPassword = (hashPassword:string):boolean => {
-    const isValid = bcr.compareSync(hashPassword, hashPassword);
+export const CheckPassword = (password:string,hashPassword:string):boolean => {
+    const isValid = bcr.compareSync(password, hashPassword);
     return isValid;
 };

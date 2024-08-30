@@ -3,6 +3,7 @@ import { CheckPassword } from "../helpers/bcr";
 import { GenerateToken, VerifyToken } from "../helpers/jwt";
 import postgres from '../config/db';
 import User, {TypeRegisterBody} from '../models/user.model'
+import Role from '../models/role.model';
 
 declare module 'express-serve-static-core' {
     interface Request {
@@ -39,7 +40,6 @@ class UserController {
             return res.status(500).json({success:false, message: "Internal Server Error"});
         }
     }
-
     static async TestCreate(req:Request, res:Response, next:NextFunction) {
         try {
             const name = "Tester111";
@@ -49,6 +49,44 @@ class UserController {
             const newUser = await User.create({name, email, phone, password});
             console.log(newUser);
             res.status(201).json({success: true, user: newUser.rows});
+        } catch (error) {
+            res.status(500).json({error})
+        }
+    }
+    static async TestLogin(req:Request, res:Response, next:NextFunction) {
+        try {
+            const email = "tester12@mail.com";
+            const password = "Bongkibong12";
+            const logUser:any= await User.findOneByEmail(email);
+            if (!logUser) return res.status(404).json({message: "user not found!"});
+            if(CheckPassword(password, logUser.password)) {
+                const token = GenerateToken({id:logUser.id, email:logUser.email});
+                return res.status(200).json({success: true, user:{...logUser, password: ""}, accessToken:token});
+            }
+            return res.status(200).json({message: "NOT FOUND"})
+        } catch (error) {
+            
+        }
+    }
+    static async TestUpdateUser(req:Request, res:Response, next:NextFunction) {
+        try {
+            const id = "3";
+            const name = "Tester1dd1"
+            const updateUser = await User.findOneByIdAndUpdate({
+                id: 3,
+                fields: ["name"], 
+                values: [name]
+            })
+            res.status(200).json({success: true, user: updateUser})
+        } catch (error) {
+            console.log(error);
+            res.status(500).json({error});
+        }
+    }
+    static async TestGetAllRoles(req:Request, res:Response, next:NextFunction) {
+        try {
+            const roles = await Role.findMany();
+            res.status(200).json({success: true, roles})
         } catch (error) {
             res.status(500).json({error})
         }

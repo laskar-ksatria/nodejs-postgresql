@@ -10,5 +10,5 @@ export interface ObjectFunction {
     create: (payload:TypeRegisterBody) => Promise<any>;
     findOneById: (id:string) => Promise<any>;
     findOneByEmail: (email:string) => Promise<any>;
-    findOneAndUpdate: (payload:any) => Promise<any>;
+    findOneByIdAndUpdate: (payload:any) => Promise<any>;
 }

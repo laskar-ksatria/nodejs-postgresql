@@ -16,16 +16,11 @@ export enum KeyEnum {
 export const Q_FIND_ONE_USER = (key:KeyEnum) => 
   `SELECT id, name, email, phone, password FROM users WHERE ${key} = $1`
 
-export const Q_UPDATE = (dbName:string, key:string, fields:string[]) => {
+export const Q_UPDATE_USERS = (key:string, fields:string[]) => {
   let fieldString = "";
   fields.forEach((item:string, i:any) => {
     if (i < fields.length - 1) fieldString += `${item} = $${item+1},`
-    else fieldString += `${item} = $${item+1}`
+    else fieldString += `${item} = $${i + 1}`
   })
-  return `UPDATE users SET ${fieldString} WHERE ${key} = $${fields.length};`
+  return `UPDATE users SET ${fieldString} WHERE ${key} = $${fields.length + 1} RETURNING id, name, email, phone;`
 }
-
-// UPDATE users
-// SET name = $1,
-//     phone = $2
-// WHERE email = $3;
