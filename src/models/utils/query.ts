@@ -4,17 +4,14 @@ export const Q_CREATE_USER = `
   RETURNING *;
 `;
 
-export const Q_FIND_ALL = (dbName:string):string => {
-    return `SELECT * FROM ${dbName.toLowerCase()}`
+export const Q_FIND_ALL = (dbName:string, column:string = "*"):string => {
+    return `SELECT ${column} FROM ${dbName.toLowerCase()}`
 };
-
 
 export enum KeyEnum {
   email = 'email',
   id = 'id'
 }
-
-
 
 export const Q_FIND_ONE_USER = (key:KeyEnum) => 
   `SELECT id, name, email, phone, password FROM users WHERE ${key} = $1`

@@ -7,11 +7,9 @@ import {
 } from './utils/query';
 import { KeyEnum } from './utils/query';
 import { HashingPassword } from '../helpers/bcr';
-import { ObjectFunction } from '../controllers/utils/type';
+import { ObjectFunction } from './utils/type';
 
-/**
- * Type & Interface
- */
+
 export interface TypeRegisterBody {
     name: string, 
     email: string,
@@ -19,12 +17,12 @@ export interface TypeRegisterBody {
     password: string
 }
 
-
-const dbName:string = "user";
+const dbName:string = "users";
+const userColumn:string = "id, name, email, phone"
 
 const User:ObjectFunction = {
     findMany: async ():Promise<any> => {
-        const result = await postgres.query(Q_FIND_ALL(dbName));
+        const result = await postgres.query(Q_FIND_ALL(dbName, userColumn));
         return result?.rows;
     },
     create: async (payload:TypeRegisterBody):Promise<any> => {
